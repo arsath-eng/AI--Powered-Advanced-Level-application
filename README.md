@@ -211,5 +211,17 @@ The application is containerized and ready for deployment on any cloud platform 
 
 ---
 
+## Screenshots
+<img width="1919" height="912" alt="Al-home" src="https://github.com/user-attachments/assets/5a476913-31c8-4fd0-8bca-f4d62318b510" />
+<img width="786" height="607" alt="1" src="https://github.com/user-attachments/assets/2668d28b-0400-4d0b-836f-79275cec55d8" />
+<img width="772" height="788" alt="2" src="https://github.com/user-attachments/assets/e45be4e1-5b4c-4f50-abf2-8fc063cec9f7" />
+<img width="782" height="698" alt="3" src="https://github.com/user-attachments/assets/095ed400-eff3-4a27-b5de-2ad2d070e2de" />
+<img width="801" height="668" alt="4" src="https://github.com/user-attachments/assets/8228dba0-1d25-4f9e-8eed-6b98fb2b3dbb" />
 
+
+
+
+
+
+---
 
