@@ -1,0 +1,34 @@
+# General
+.DS_Store
+*.log
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+.pytest_cache/
+
+# Node/Frontend
+node_modules/
+.next/
+dist/
+build/
+out/
+.vercel/
+
+# Editor
+.vscode/
+.idea/
+
+# Backend specific (if any)
+backend/venv
+backend/.env
+
+# Frontend specific
+frontend/admin-dashboard/.next
+frontend/admin-dashboard/node_modules
