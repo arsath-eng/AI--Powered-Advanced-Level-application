@@ -1,4 +1,4 @@
-# 🎓 12TH.ai - AI-Powered Academic Tutor- It's Ongoing Project
+# 🎓 12TH.ai - AI-Powered Academic Tutor
 
 **12TH.ai**  is a full-stack, AI-driven tutoring platform designed to provide accurate, context-aware academic support for Sri Lankan G.C.E. Advanced Level students. It specializes in **Physics**, **Chemistry**, and **Combined Mathematics**, leveraging a powerful Retrieval-Augmented Generation (RAG) system to deliver factually-grounded answers.
 
@@ -148,35 +148,31 @@ The application will be available at `http://localhost:3000`.
 
 
 ## 🧠 Prompt Engineering & Context Management
-145: 
-146: This system uses a sophisticated prompt engineering strategy to ensure high-quality, syllabus-compliant responses.
-147: 
-148: ### 1. System Constitution (`UNIFIED_SYSTEM_PROMPT`)
-149: The AI is given a core identity "A/L Thōzhan" (A/L Scholar) via a rigid system instructions block. This "Constitution" defines:
-150: *   **Persona:** An expert Sri Lankan A/L Tutor.
-151: *   **Language:** Tamil primary response with English technical terms.
-152: *   **Formatting:** Strict LaTeX rules for all math ($x$, $$E=mc^2$$) and markdown structure.
-153: *   **Tone:** Helpful, precise, and educational.
-154: 
-155: ### 2. Dynamic Context Injection
-156: When a user asks a question, the system dynamically assembles the prompt using RAG:
-157: 
-158: *   **Retrieval:** The user's query is vectorized to search the PostgreSQL (`pgvector`) database for relevant theories, past paper questions, or textbook content.
-159: *   **History:** The conversation history is pulled from the `conversations` table to maintain context (e.g., "Explain *that* step again").
-160: *   **Assembly:** These components are injected into scenario-specific templates:
-161: 
-162: ### 3. Prompt Templates
-163: The backend switches between different templates based on the intent:
-164: 
-165: *   **`PAST_PAPER_TEMPLATE`**: Used when discussing specific exam questions. It forces the AI to structure the answer with "Question", "Relevant Theories", "Step-by-Step Solution", and "Final Answer".
-166: *   **`THEORY_EXPLANATION_TEMPLATE`**: Used for conceptual questions, mandating "Definition", "Equations", and "Explanation" sections.
-167: *   **`ESSAY_QUESTION_TEMPLATE`**: Handles multi-part structured essay questions, ensuring each part is answered individually before summarizing.
-168: 
-169: This structured approach prevents "AI hallucination" and ensures the output is always formatted correctly for the frontend's LaTeX renderer.
-170: 
-171: ---
-172: 
-173: ## 🧠 Prompt Engineering & Context Management
+ 
+ This system uses a sophisticated prompt engineering strategy to ensure high-quality, syllabus-compliant responses.
+ 
+ ### 1. System Constitution (`UNIFIED_SYSTEM_PROMPT`)
+ The AI is given a core identity "A/L Thōzhan" (A/L Scholar) via a rigid system instructions block. This "Constitution" defines:
+ *   **Persona:** An expert Sri Lankan A/L Tutor.
+ *   **Language:** Tamil primary response with English technical terms.
+ *   **Formatting:** Strict LaTeX rules for all math ($x$, $$E=mc^2$$) and markdown structure.
+ *   **Tone:** Helpful, precise, and educational.
+ 
+ ### 2. Dynamic Context Injection
+ When a user asks a question, the system dynamically assembles the prompt using RAG:
+ 
+ *   **Retrieval:** The user's query is vectorized to search the PostgreSQL (`pgvector`) database for relevant theories, past paper questions, or textbook content.
+ *   **History:** The conversation history is pulled from the `conversations` table to maintain context (e.g., "Explain *that* step again").
+ *   **Assembly:** These components are injected into scenario-specific templates:
+ 
+ ### 3. Prompt Templates
+ The backend switches between different templates based on the intent:
+ 
+ *   **`PAST_PAPER_TEMPLATE`**: Used when discussing specific exam questions. It forces the AI to structure the answer with "Question", "Relevant Theories", "Step-by-Step Solution", and "Final Answer".
+ *   **`THEORY_EXPLANATION_TEMPLATE`**: Used for conceptual questions, mandating "Definition", "Equations", and "Explanation" sections.
+ *   **`ESSAY_QUESTION_TEMPLATE`**: Handles multi-part structured essay questions, ensuring each part is answered individually before summarizing.
+ 
+ This structured approach prevents "AI hallucination" and ensures the output is always formatted correctly for the frontend's LaTeX renderer.
 
 This system uses a sophisticated prompt engineering strategy to ensure high-quality, syllabus-compliant responses.
 
