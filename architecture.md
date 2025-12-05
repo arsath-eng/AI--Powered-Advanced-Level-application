@@ -10,11 +10,11 @@ The system follows a microservices-inspired, modular monolith architecture with 
 
 ```mermaid
 graph TD
-    User[Student / User] -->|HTTPS| FE[Frontend (Next.js)]
+    User[Student / User] -->|HTTPS| FE["Frontend (Next.js)"]
     
     subgraph "Frontend Layer"
         FE -->|Auth| NextAuth[NextAuth.js]
-        FE -->|API Calls| BE_API[Backend API (FastAPI)]
+        FE -->|API Calls| BE_API["Backend API (FastAPI)"]
         FE -->|WebSocket| BE_WS[WebSocket Service]
     end
     
@@ -28,13 +28,13 @@ graph TD
     subgraph "Data Layer"
         AuthServ -->|Read/Write| DB[(PostgreSQL)]
         UserServ -->|Read/Write| DB
-        RAGServ -->|Vector Search| PGVector[(PostgreSQL + pgvector)]
+        RAGServ -->|Vector Search| PGVector["PostgreSQL + pgvector"]
         RAGServ -->|Content Retrieval| DB
     end
     
     subgraph "External Services"
-        NextAuth -->|OAuth| GoogleAuth[Google OAuth 2.0]
-        RAGServ -->|Generation| Gemini[Google Gemini API]
+        NextAuth -->|OAuth| GoogleAuth["Google OAuth 2.0"]
+        RAGServ -->|Generation| Gemini["Google Gemini API"]
     end
 ```
 

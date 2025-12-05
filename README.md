@@ -18,29 +18,7 @@
 
 ## 🏛️ Architecture Overview
 
-The application follows a modern, decoupled architecture with a Next.js frontend, a FastAPI backend, and separate services for structured and unstructured data storage.
-
-```
-[ User on Browser ]
-       |
-+----[ Next.js Frontend ]----+
-|   (React, NextAuth.js, SWR)  |
-+----------------------------+
-       |           | (WebSocket)
-(REST API)     |
-       |           |
-+----[ FastAPI Backend ]-----+
-|        (Python)            |
-+----------------------------+
-  |      |        |        |
-  |      |        |        +--->[ Google Gemini API ] (Generative AI)
-  |      |        |
-  |      |        +------------>[ PostgreSQL pgvector ] (Vector Store for RAG)
-  |      |
-  |      +---------------------->[ PostgreSQL ] (Structured Data via SQLAlchemy)
-  |
-  +---------------------------->[ Google OAuth 2.0 ] (Authentication)
-```
+For a comprehensive deep-dive into the system's technical design, including component interactions and data flow diagrams, please refer to the [Architecture Documentation](architecture.md).
 
 ---
 
@@ -57,91 +35,175 @@ The application follows a modern, decoupled architecture with a Next.js frontend
 
 ## 🚀 Getting Started
 
-Follow these instructions to get a local copy up and running.
+Follow these step-by-step instructions to set up the project locally.
 
 ### Prerequisites
 
-* Python 3.11+
-* Node.js 18+
-* Docker and Docker Compose
-* A PostgreSQL database instance
+*   **Python 3.11+**: Ensure Python is installed and added to your PATH.
+*   **Node.js 18+**: Required for the Next.js frontend.
+*   **PostgreSQL 15+**: You need a running PostgreSQL instance with the `pgvector` extension installed.
+*   **Git**: For cloning the repository.
 
-### Backend Setup
+### 1. Clone the Repository
 
-1. **Clone the repository:**
+```bash
+git clone https://github.com/arsath-eng/AI--Powered-Advanced-Level-application.git
+cd AI--Powered-Advanced-Level-application
+```
 
-   ```bash
-   git clone <your-repository-url>
-   cd <repository-folder>/backend
-   ```
+### 2. Backend Setup
 
-2. **Create and configure the environment file:**
+navigate to the backend directory:
 
-   * Rename `.env.example` to `.env`.
-   * Fill in the required values for your `DATABASE_URL`, `SECRET_KEY`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, and `GEMINI_API_KEY`.
+```bash
+cd "backend-new -add features/backend"
+```
 
-3. **Install dependencies:**
+**Create Virtual Environment:**
 
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   pip install -r requirements.txt
-   ```
+```bash
+python -m venv venv
+# Activate the virtual environment
+# On Windows:
+.\venv\Scripts\activate
+# On macOS/Linux:
+source venv/bin/activate
+```
 
-4. **Run Database Migrations:**
+**Install Dependencies:**
 
-   * Ensure your `alembic.ini` is configured with the correct `sqlalchemy.url`.
-   * Apply all migrations to set up your database schema:
-     ```bash
-     alembic upgrade head
-     ```
+```bash
+pip install -r requirements.txt
+```
 
-5. **Ingest Data into Vector Store (First Time Only):**
+**Environment Configuration:**
 
-   * Place your JSON data and PDF files in the designated folders.
-   * Run the ingestion script:
-     ```bash
-     python ingest_data.py
-     ```
+1.  Create a `.env` file in the `backend-new -add features/backend` directory.
+2.  Paste the following configuration (update with your actual credentials):
 
-6. **Run the Backend Server:**
+    ```ini
+    # Database (Ensure pgvector is enabled on this DB)
+    DATABASE_URL=postgresql://postgres:yourpassword@localhost:5432/twelfth_ai
 
-   * You can run the app directly with Uvicorn or use the provided Docker setup.
-   * **Using Docker (Recommended for Production Simulation):**
-     ```bash
-     docker-compose up --build
-     ```
+    # Security
+    SECRET_KEY=your_super_secret_key_openssl_rand_hex_32
+    ALGORITHM=HS256
+    ACCESS_TOKEN_EXPIRE_MINUTES=30
 
-### Frontend Setup
+    # Google OAuth
+    GOOGLE_CLIENT_ID=your_google_client_id
+    GOOGLE_CLIENT_SECRET=your_google_client_secret
 
-1. **Navigate to the frontend directory:**
+    # AI Services
+    GEMINI_API_KEY=your_google_gemini_api_key
+    ```
 
-   ```bash
-   cd ../frontend 
-   ```
+**Initialize Database:**
 
-2. **Create and configure the environment file:**
+```bash
+# Run Alembic migrations to create tables
+alembic upgrade head
+```
 
-   * Rename `.env.local.example` to `.env.local`.
-   * Set `NEXT_PUBLIC_API_URL` to `http://localhost:8000`.
+**Run the Server:**
 
-3. **Install dependencies:**
+```bash
+uvicorn app.main:app --reload
+```
 
-   ```bash
-   npm install
-   ```
+The backend will start at `http://localhost:8000`.
 
-4. **Run the Frontend Development Server:**
+### 3. Frontend Setup
 
-   ```bash
-   npm run dev
-   ```
+Open a new terminal and navigate to the frontend directory:
 
-Your application should now be running! Open `http://localhost:3000` in your browser.
+```bash
+cd frontend/admin-dashboard
+```
+
+**Environment Configuration:**
+
+1.  Create a `.env.local` file.
+2.  Add the following:
+
+    ```ini
+    NEXT_PUBLIC_API_URL=http://localhost:8000
+    NEXTAUTH_URL=http://localhost:3000
+    NEXTAUTH_SECRET=your_nextauth_secret
+    GOOGLE_CLIENT_ID=your_google_client_id
+    GOOGLE_CLIENT_SECRET=your_google_client_secret
+    ```
+
+**Install Dependencies & Run:**
+
+```bash
+npm install
+npm run dev
+```
+
+The application will be available at `http://localhost:3000`.
 
 ---
 
 
+
+## 🧠 Prompt Engineering & Context Management
+145: 
+146: This system uses a sophisticated prompt engineering strategy to ensure high-quality, syllabus-compliant responses.
+147: 
+148: ### 1. System Constitution (`UNIFIED_SYSTEM_PROMPT`)
+149: The AI is given a core identity "A/L Thōzhan" (A/L Scholar) via a rigid system instructions block. This "Constitution" defines:
+150: *   **Persona:** An expert Sri Lankan A/L Tutor.
+151: *   **Language:** Tamil primary response with English technical terms.
+152: *   **Formatting:** Strict LaTeX rules for all math ($x$, $$E=mc^2$$) and markdown structure.
+153: *   **Tone:** Helpful, precise, and educational.
+154: 
+155: ### 2. Dynamic Context Injection
+156: When a user asks a question, the system dynamically assembles the prompt using RAG:
+157: 
+158: *   **Retrieval:** The user's query is vectorized to search the PostgreSQL (`pgvector`) database for relevant theories, past paper questions, or textbook content.
+159: *   **History:** The conversation history is pulled from the `conversations` table to maintain context (e.g., "Explain *that* step again").
+160: *   **Assembly:** These components are injected into scenario-specific templates:
+161: 
+162: ### 3. Prompt Templates
+163: The backend switches between different templates based on the intent:
+164: 
+165: *   **`PAST_PAPER_TEMPLATE`**: Used when discussing specific exam questions. It forces the AI to structure the answer with "Question", "Relevant Theories", "Step-by-Step Solution", and "Final Answer".
+166: *   **`THEORY_EXPLANATION_TEMPLATE`**: Used for conceptual questions, mandating "Definition", "Equations", and "Explanation" sections.
+167: *   **`ESSAY_QUESTION_TEMPLATE`**: Handles multi-part structured essay questions, ensuring each part is answered individually before summarizing.
+168: 
+169: This structured approach prevents "AI hallucination" and ensures the output is always formatted correctly for the frontend's LaTeX renderer.
+170: 
+171: ---
+172: 
+173: ## 🧠 Prompt Engineering & Context Management
+
+This system uses a sophisticated prompt engineering strategy to ensure high-quality, syllabus-compliant responses.
+
+### 1. System Constitution (`UNIFIED_SYSTEM_PROMPT`)
+The AI is given a core identity "A/L Thōzhan" (A/L Scholar) via a rigid system instructions block. This "Constitution" defines:
+*   **Persona:** An expert Sri Lankan A/L Tutor.
+*   **Language:** Tamil primary response with English technical terms.
+*   **Formatting:** Strict LaTeX rules for all math ($x$, $$E=mc^2$$) and markdown structure.
+*   **Tone:** Helpful, precise, and educational.
+
+### 2. Dynamic Context Injection
+When a user asks a question, the system dynamically assembles the prompt using RAG:
+
+*   **Retrieval:** The user's query is vectorized to search the PostgreSQL (`pgvector`) database for relevant theories, past paper questions, or textbook content.
+*   **History:** The conversation history is pulled from the `conversations` table to maintain context (e.g., "Explain *that* step again").
+*   **Assembly:** These components are injected into scenario-specific templates:
+
+### 3. Prompt Templates
+The backend switches between different templates based on the intent:
+
+*   **`PAST_PAPER_TEMPLATE`**: Used when discussing specific exam questions. It forces the AI to structure the answer with "Question", "Relevant Theories", "Step-by-Step Solution", and "Final Answer".
+*   **`THEORY_EXPLANATION_TEMPLATE`**: Used for conceptual questions, mandating "Definition", "Equations", and "Explanation" sections.
+*   **`ESSAY_QUESTION_TEMPLATE`**: Handles multi-part structured essay questions, ensuring each part is answered individually before summarizing.
+
+This structured approach prevents "AI hallucination" and ensures the output is always formatted correctly for the frontend's LaTeX renderer.
+
+---
 
 ## 🎯 Use Cases
 
